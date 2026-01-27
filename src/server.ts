@@ -1,5 +1,7 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
+import { router } from "./routes/routes"; // <--- IMPORTANTE
+import { testConnection } from "./database";
 
 dotenv.config();
 
@@ -7,11 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Bem-vindo ao Atlas API 🚀" });
-});
+app.use(router); // <--- IMPORTANTE
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  testConnection();
 });
