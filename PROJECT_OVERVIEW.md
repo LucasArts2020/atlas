@@ -1,11 +1,11 @@
-# 🎉 Atlas - Visão Geral Completa do Projeto
+﻿#   Atlas - Visão Geral Completa do Projeto
 
-## 📱 Estrutura Geral
+##   Estrutura Geral
 
 ```
 ATLAS (Aplicação de Gerenciamento de Livros)
 │
-├── 🖥️ Frontend (Next.js)
+├──  ️ Frontend (Next.js)
 │   ├── Autenticação
 │   ├── Dashboard
 │   ├── Catálogo de Livros
@@ -13,7 +13,7 @@ ATLAS (Aplicação de Gerenciamento de Livros)
 │   ├── Configurações
 │   └── Favoritos
 │
-└── 🔧 Backend (Express + TypeScript)
+└──   Backend (Express + TypeScript)
     ├── Autenticação (JWT)
     ├── Gestão de Livros
     ├── Favoritos
@@ -23,11 +23,11 @@ ATLAS (Aplicação de Gerenciamento de Livros)
 
 ---
 
-## 📁 Estrutura de Diretórios
+##   Estrutura de Diretórios
 
 ```
 atlas/
-├── atlas-api/                    # 🔧 Backend API
+├── atlas-api/                    #   Backend API
 │   ├── src/
 │   │   ├── controllers/          # HTTP handlers
 │   │   ├── services/             # Lógica de negócio
@@ -50,7 +50,7 @@ atlas/
 │   ├── tsconfig.json
 │   └── ...
 │
-└── atlas-web/                    # 🖥️ Frontend Next.js
+└── atlas-web/                    #  ️ Frontend Next.js
     ├── app/
     │   ├── login/
     │   ├── register/
@@ -79,7 +79,7 @@ atlas/
 
 ---
 
-## 🔄 Fluxo de Dados
+##   Fluxo de Dados
 
 ### Ao Criar um Livro
 
@@ -124,7 +124,7 @@ atlas/
 
 ---
 
-## 🔐 Segurança
+##   Segurança
 
 ### Fluxo de Autenticação
 
@@ -173,7 +173,7 @@ REQUISIÇÕES AUTENTICADAS
 
 ---
 
-## 📊 Banco de Dados
+##   Banco de Dados
 
 ### Tabelas
 
@@ -212,7 +212,7 @@ FAVORITES
 
 ---
 
-## 🌐 API Endpoints
+##   API Endpoints
 
 ### Autenticação
 
@@ -251,7 +251,7 @@ GET    /profile/activity          # Histórico
 
 ---
 
-## 🚀 Tecnologias
+##   Tecnologias
 
 ### Backend
 
@@ -280,7 +280,7 @@ GET    /profile/activity          # Histórico
 
 ---
 
-## 📦 Scripts Disponíveis
+##   Scripts Disponíveis
 
 ### Backend
 
@@ -302,9 +302,9 @@ npm run lint     # Lint do código
 
 ---
 
-## 🎯 Recursos Implementados
+##   Recursos Implementados
 
-### ✅ Completados
+###   Completados
 
 - [x] Autenticação com JWT
 - [x] CRUD de livros
@@ -317,14 +317,14 @@ npm run lint     # Lint do código
 - [x] Validação de entrada
 - [x] Arquitetura refatorada
 
-### 🚧 Em Progresso
+###   Em Progresso
 
 - [ ] Testes unitários
 - [ ] Documentação Swagger
 - [ ] Rate limiting
 - [ ] Caching (Redis)
 
-### 📋 Planejados
+###   Planejados
 
 - [ ] Sistema de resenhas
 - [ ] Comentários em livros
@@ -334,7 +334,7 @@ npm run lint     # Lint do código
 
 ---
 
-## 🔗 Documentação
+##   Documentação
 
 1. **ARCHITECTURE.md** - Arquitetura detalhada
 2. **README_API.md** - Documentação da API
@@ -344,7 +344,7 @@ npm run lint     # Lint do código
 
 ---
 
-## 🏃 Como Rodar Localmente
+##   Como Rodar Localmente
 
 ### 1. Setup Inicial
 
@@ -377,7 +377,7 @@ Password: senha123
 
 ---
 
-## 📚 Stack Final
+##   Stack Final
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -407,12 +407,12 @@ Password: senha123
 
 ---
 
-## 🎓 Conclusão
+##   Conclusão
 
 Atlas é uma aplicação **moderna, escalável e bem arquitetada** para gerenciamento de livros pessoais. Com separação clara de responsabilidades, tipagem TypeScript e padrões de design estabelecidos, está pronta para crescimento futuro.
 
-### Status: ✅ PRONTA PARA DESENVOLVIMENTO E PRODUÇÃO
+### Status:   PRONTA PARA DESENVOLVIMENTO E PRODUÇÃO
 
 ---
 
-**Desenvolvido com ❤️ em TypeScript, React e Express.js**
+**Desenvolvido com  ️ em TypeScript, React e Express.js**

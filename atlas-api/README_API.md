@@ -1,20 +1,20 @@
-# 📚 Atlas API
+﻿#   Atlas API
 
 API RESTful para gerenciamento de livros pessoais com sistema de favoritos, ratings e rastreamento de leitura.
 
-## 🎯 Features
+##   Features
 
-- ✅ Autenticação com JWT
-- ✅ Gerenciamento de livros (CRUD)
-- ✅ Sistema de favoritos
-- ✅ Ratings e avaliações
-- ✅ Rastreamento de leitura (páginas lidas)
-- ✅ Perfil do usuário
-- ✅ Histórico de atividades
-- ✅ Segurança com bcryptjs
-- ✅ Validação com Zod
+-   Autenticação com JWT
+-   Gerenciamento de livros (CRUD)
+-   Sistema de favoritos
+-   Ratings e avaliações
+-   Rastreamento de leitura (páginas lidas)
+-   Perfil do usuário
+-   Histórico de atividades
+-   Segurança com bcryptjs
+-   Validação com Zod
 
-## 🏗️ Arquitetura
+##  ️ Arquitetura
 
 A API segue o padrão de arquitetura em camadas:
 
@@ -75,7 +75,7 @@ npm run dev
 
 O servidor estará disponível em `http://localhost:3000`
 
-## 📡 Endpoints
+##   Endpoints
 
 ### Autenticação
 
@@ -112,7 +112,7 @@ POST   /profile/change-password   # Alterar senha
 GET    /profile/activity          # Obter histórico de atividades
 ```
 
-## 📚 Exemplos de Uso
+##   Exemplos de Uso
 
 ### Registrar novo usuário
 
@@ -169,7 +169,7 @@ curl -X POST http://localhost:3000/books/1/favorite \
   -H "Authorization: Bearer SEU_TOKEN"
 ```
 
-## 🔐 Autenticação
+##   Autenticação
 
 A API usa JWT (JSON Web Tokens) para autenticação. Após fazer login, você receberá um token que deve ser enviado em todas as requisições protegidas:
 
@@ -177,7 +177,7 @@ A API usa JWT (JSON Web Tokens) para autenticação. Após fazer login, você re
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-## 🗄️ Banco de Dados
+##  ️ Banco de Dados
 
 ### Schema
 
@@ -220,7 +220,7 @@ CREATE TABLE favorites (
 );
 ```
 
-## 📦 Dependências
+##   Dependências
 
 - **express**: Framework web
 - **pg**: PostgreSQL driver
@@ -232,7 +232,7 @@ CREATE TABLE favorites (
 - **typescript**: Tipagem estática
 - **ts-node-dev**: Desenvolvimento com auto-reload
 
-## 🧪 Scripts
+##   Scripts
 
 ```bash
 npm run dev      # Inicia em desenvolvimento com auto-reload
@@ -241,7 +241,7 @@ npm start        # Inicia o servidor compilado
 npm run setup    # Executa setup inicial do banco
 ```
 
-## 🔧 Configuração
+##   Configuração
 
 Edite o arquivo `.env`:
 
@@ -264,11 +264,11 @@ JWT_EXPIRES_IN=7d
 CORS_ORIGIN=http://localhost:3001
 ```
 
-## 📝 Estrutura de Arquivos
+##   Estrutura de Arquivos
 
 Veja [ARCHITECTURE.md](./ARCHITECTURE.md) para entender a estrutura do projeto.
 
-## 🚨 Tratamento de Erros
+##   Tratamento de Erros
 
 A API retorna erros em formato JSON:
 
@@ -288,16 +288,16 @@ Códigos HTTP principais:
 - `404 Not Found` - Recurso não encontrado
 - `500 Internal Server Error` - Erro no servidor
 
-## 🔒 Segurança
+##   Segurança
 
-- ✅ Senhas hasheadas com bcryptjs
-- ✅ JWT para autenticação
-- ✅ CORS configurado
-- ✅ Validação de entrada com Zod
-- ✅ Proteção contra SQL injection (prepared statements)
-- ✅ Verificação de propriedade (usuário só acessa seus dados)
+-   Senhas hasheadas com bcryptjs
+-   JWT para autenticação
+-   CORS configurado
+-   Validação de entrada com Zod
+-   Proteção contra SQL injection (prepared statements)
+-   Verificação de propriedade (usuário só acessa seus dados)
 
-## 🚀 Deploy
+##   Deploy
 
 ### Heroku
 
@@ -312,13 +312,13 @@ docker build -t atlas-api .
 docker run -p 3000:3000 atlas-api
 ```
 
-## 📚 Documentação Adicional
+##   Documentação Adicional
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - Arquitetura detalhada
 - [REFACTORING_SUMMARY.md](./REFACTORING_SUMMARY.md) - Sumário da refatoração
 - [.env.example](./.env.example) - Exemplo de variáveis de ambiente
 
-## 🤝 Contribuindo
+##   Contribuindo
 
 1. Faça um fork
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
@@ -326,14 +326,14 @@ docker run -p 3000:3000 atlas-api
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
+##   Licença
 
 Este projeto está sob a licença ISC.
 
-## 👤 Autor
+##   Autor
 
 Atlas API - Sistema de Gerenciamento de Livros Pessoais
 
 ---
 
-**Desenvolvido com ❤️ usando Express.js e TypeScript**
+**Desenvolvido com  ️ usando Express.js e TypeScript**

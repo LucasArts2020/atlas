@@ -1,6 +1,6 @@
-# 📚 Índice de Documentação - Atlas Project
+﻿#   Índice de Documentação - Atlas Project
 
-## 🎯 Comece Aqui
+##   Comece Aqui
 
 **Se você é novo no projeto:**
 
@@ -9,31 +9,31 @@
 
 ---
 
-## 📖 Documentação do Projeto
+##   Documentação do Projeto
 
-### 📍 Pasta Raiz (`/`)
+###   Pasta Raiz (`/`)
 
 | Documento                                                      | Conteúdo                                 | Leitor          |
 | -------------------------------------------------------------- | ---------------------------------------- | --------------- |
-| [**REFACTORING_PT.md**](./REFACTORING_PT.md)                   | 🌟 **COMECE AQUI** - Resumo em português | Todos           |
+| [**REFACTORING_PT.md**](./REFACTORING_PT.md)                   |   **COMECE AQUI** - Resumo em português | Todos           |
 | [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md)                   | Visão geral da arquitetura completa      | Desenvolvedores |
 | [REFACTORING_VISUAL.md](./REFACTORING_VISUAL.md)               | Representação visual da transformação    | Todos           |
 | [REFACTORING_CHECKLIST.md](./REFACTORING_CHECKLIST.md)         | Resumo executivo com checklist           | Todos           |
 | [REFACTORING_FINAL_SUMMARY.md](./REFACTORING_FINAL_SUMMARY.md) | Sumário final da refatoração             | Desenvolvedores |
 
-### 📍 Pasta API (`atlas-api/`)
+###   Pasta API (`atlas-api/`)
 
 | Documento                                                      | Conteúdo                     | Leitor           |
 | -------------------------------------------------------------- | ---------------------------- | ---------------- |
-| [**README_API.md**](./atlas-api/README_API.md)                 | 🔧 **Como usar a API**       | Desenvolvedores  |
-| [**ARCHITECTURE.md**](./atlas-api/ARCHITECTURE.md)             | 🏗️ **Arquitetura detalhada** | Arquitetos/Leads |
+| [**README_API.md**](./atlas-api/README_API.md)                 |   **Como usar a API**       | Desenvolvedores  |
+| [**ARCHITECTURE.md**](./atlas-api/ARCHITECTURE.md)             |  ️ **Arquitetura detalhada** | Arquitetos/Leads |
 | [REFACTORING_SUMMARY.md](./atlas-api/REFACTORING_SUMMARY.md)   | Sumário da refatoração       | Interessados     |
 | [REFACTORING_COMPLETE.md](./atlas-api/REFACTORING_COMPLETE.md) | Status final                 | Todos            |
 | [.env.example](./atlas-api/.env.example)                       | Exemplo de variáveis         | Developers       |
 
 ---
 
-## 🎓 Leitura Recomendada
+##   Leitura Recomendada
 
 ### Para Entender Tudo (5-10 min)
 
@@ -63,7 +63,7 @@ Código fonte (exploração, 15-30 min)
 
 ---
 
-## 🗺️ Mapa Mental
+##  ️ Mapa Mental
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -93,7 +93,7 @@ Código fonte (exploração, 15-30 min)
 
 ---
 
-## 📋 Listagem Completa de Documentos
+##   Listagem Completa de Documentos
 
 ### Arquivos Markdown (11 arquivos)
 
@@ -121,7 +121,7 @@ Código fonte (exploração, 15-30 min)
 
 ---
 
-## 🔍 Como Procurar
+##   Como Procurar
 
 ### Tenho uma dúvida sobre...
 
@@ -151,9 +151,9 @@ Código fonte (exploração, 15-30 min)
 
 ---
 
-## 📊 Documentação por Público
+##   Documentação por Público
 
-### 👤 Product Managers / POs
+###   Product Managers / POs
 
 ```
 REFACTORING_CHECKLIST.md ← Status do projeto
@@ -161,7 +161,7 @@ REFACTORING_VISUAL.md ← O que mudou
 PROJECT_OVERVIEW.md ← Visão geral
 ```
 
-### 👨‍💻 Desenvolvedores Frontend
+###  ‍  Desenvolvedores Frontend
 
 ```
 PROJECT_OVERVIEW.md ← Entender stack
@@ -169,7 +169,7 @@ atlas-api/README_API.md ← Como usar endpoints
 atlas-api/ARCHITECTURE.md ← Entender fluxos
 ```
 
-### 👨‍💻 Desenvolvedores Backend
+###  ‍  Desenvolvedores Backend
 
 ```
 atlas-api/ARCHITECTURE.md ← Padrões e camadas
@@ -177,7 +177,7 @@ atlas-api/README_API.md ← Endpoints
 Código fonte ← Implementação
 ```
 
-### 👔 Arquitetos / Leads
+###   Arquitetos / Leads
 
 ```
 PROJECT_OVERVIEW.md ← Visão completa
@@ -185,7 +185,7 @@ atlas-api/ARCHITECTURE.md ← Design patterns
 REFACTORING_FINAL_SUMMARY.md ← Métricas
 ```
 
-### 🎓 Novos Devs
+###   Novos Devs
 
 ```
 REFACTORING_PT.md ← Entender tudo (5 min)
@@ -196,7 +196,7 @@ Código fonte ← Explorar (30 min)
 
 ---
 
-## 🎯 Sequência de Leitura Recomendada
+##   Sequência de Leitura Recomendada
 
 ### Rápido (15 minutos)
 
@@ -231,22 +231,22 @@ Código fonte ← Explorar (30 min)
 
 ---
 
-## 📐 Estrutura de Arquivos
+##   Estrutura de Arquivos
 
 ```
 atlas/
-├── 📄 REFACTORING_PT.md ............................ ⭐ COMECE AQUI
-├── 📄 PROJECT_OVERVIEW.md
-├── 📄 REFACTORING_VISUAL.md
-├── 📄 REFACTORING_CHECKLIST.md
-├── 📄 REFACTORING_FINAL_SUMMARY.md
+├──   REFACTORING_PT.md ............................ ⭐ COMECE AQUI
+├──   PROJECT_OVERVIEW.md
+├──   REFACTORING_VISUAL.md
+├──   REFACTORING_CHECKLIST.md
+├──   REFACTORING_FINAL_SUMMARY.md
 │
 └── atlas-api/
-    ├── 📄 README_API.md ........................... Guia de uso
-    ├── 📄 ARCHITECTURE.md ......................... Padrões
-    ├── 📄 REFACTORING_SUMMARY.md
-    ├── 📄 REFACTORING_COMPLETE.md
-    ├── 📄 .env.example
+    ├──   README_API.md ........................... Guia de uso
+    ├──   ARCHITECTURE.md ......................... Padrões
+    ├──   REFACTORING_SUMMARY.md
+    ├──   REFACTORING_COMPLETE.md
+    ├──   .env.example
     └── src/
         ├── controllers/ ........................... HTTP handlers
         ├── services/ ............................. Lógica
@@ -261,31 +261,31 @@ atlas/
 
 ---
 
-## ✨ Destaques
+##   Destaques
 
-### 🌟 Melhor para Começar
+###   Melhor para Começar
 
 → **REFACTORING_PT.md** (5 minutos em português)
 
-### 🔧 Melhor para Implementar
+###   Melhor para Implementar
 
 → **atlas-api/ARCHITECTURE.md** (10-20 minutos)
 
-### 📊 Melhor para Entender Tudo
+###   Melhor para Entender Tudo
 
 → **PROJECT_OVERVIEW.md** (15-30 minutos)
 
-### 🎨 Melhor para Visualizar
+###   Melhor para Visualizar
 
 → **REFACTORING_VISUAL.md** (3-5 minutos)
 
-### 📚 Melhor para Referência
+###   Melhor para Referência
 
 → **atlas-api/README_API.md** (consulta rápida)
 
 ---
 
-## 🎯 Quick Links
+##   Quick Links
 
 | Preciso                  | Documento                    |
 | ------------------------ | ---------------------------- |
@@ -300,7 +300,7 @@ atlas/
 
 ---
 
-## 💡 Dicas
+##   Dicas
 
 1. **Comece por REFACTORING_PT.md** - 5 minutos e você entende tudo
 2. **Use PROJECT_OVERVIEW.md como referência** - Veja quando tiver dúvidas
@@ -310,19 +310,19 @@ atlas/
 
 ---
 
-## 🚀 Próximas Etapas
+##   Próximas Etapas
 
-1. ✅ Leia REFACTORING_PT.md (5 min)
-2. ✅ Explore PROJECT_OVERVIEW.md (15 min)
-3. ✅ Estude ARCHITECTURE.md (20 min)
-4. ✅ Clone o repositório
-5. ✅ Execute `npm run dev`
-6. ✅ Explore o código
-7. ✅ Comece a desenvolver!
+1.   Leia REFACTORING_PT.md (5 min)
+2.   Explore PROJECT_OVERVIEW.md (15 min)
+3.   Estude ARCHITECTURE.md (20 min)
+4.   Clone o repositório
+5.   Execute `npm run dev`
+6.   Explore o código
+7.   Comece a desenvolver!
 
 ---
 
-## 📞 Dúvidas Frequentes
+##   Dúvidas Frequentes
 
 **P: Por onde começo?**
 R: Leia REFACTORING_PT.md (5 minutos)
@@ -341,7 +341,7 @@ R: Veja atlas-api/README_API.md - Seção "Instalação"
 
 ---
 
-## ✅ Checklist de Aprendizado
+##   Checklist de Aprendizado
 
 - [ ] Li REFACTORING_PT.md
 - [ ] Entendi a arquitetura
@@ -354,4 +354,4 @@ R: Veja atlas-api/README_API.md - Seção "Instalação"
 
 ---
 
-**Pronto? Comece por [REFACTORING_PT.md](./REFACTORING_PT.md)! 🚀**
+**Pronto? Comece por [REFACTORING_PT.md](./REFACTORING_PT.md)!  **

@@ -1,6 +1,6 @@
-# Atlas API - Arquitetura Melhorada
+﻿# Atlas API - Arquitetura Melhorada
 
-## 📁 Estrutura do Projeto
+##   Estrutura do Projeto
 
 ```
 src/
@@ -36,7 +36,7 @@ src/
 └── config/              # Configurações (variáveis de ambiente)
 ```
 
-## 🏗️ Arquitetura em Camadas
+##  ️ Arquitetura em Camadas
 
 ### 1. **Controllers** (Camada de Apresentação)
 
@@ -90,7 +90,7 @@ static async findById(id: number): Promise<User | null> {
 }
 ```
 
-## 📦 Fluxo de uma Requisição
+##   Fluxo de uma Requisição
 
 ```
 1. Cliente envia GET /profile
@@ -108,32 +108,32 @@ static async findById(id: number): Promise<User | null> {
 7. Response JSON é enviado ao cliente
 ```
 
-## 🔄 Vantagens da Nova Arquitetura
+##   Vantagens da Nova Arquitetura
 
-✅ **Separação de Responsabilidades**
+  **Separação de Responsabilidades**
 
 - Cada classe tem uma responsabilidade clara
 
-✅ **Reutilização**
+  **Reutilização**
 
 - Services e Repositories podem ser usados por múltiplos controllers
 
-✅ **Testabilidade**
+  **Testabilidade**
 
 - Cada camada pode ser testada isoladamente
 - Fácil fazer mocks de repositories
 
-✅ **Manutenibilidade**
+  **Manutenibilidade**
 
 - Código organizado e previsível
 - Mudanças no banco afetam apenas repositories
 
-✅ **Escalabilidade**
+  **Escalabilidade**
 
 - Fácil adicionar novos endpoints
 - Fácil refatorar sem quebrar tudo
 
-## 🚀 Adicionando Novo Endpoint
+##   Adicionando Novo Endpoint
 
 ### Exemplo: Adicionar rota DELETE /books/:id/favorite
 
@@ -173,7 +173,7 @@ static async remove(userId: number, bookId: number): Promise<boolean> {
 }
 ```
 
-## 📝 Convenções
+##   Convenções
 
 - **Controllers**: PascalCase, sufixo `Controller`
 - **Services**: PascalCase, sufixo `Service`
@@ -183,15 +183,15 @@ static async remove(userId: number, bookId: number): Promise<boolean> {
 - **Variables**: camelCase
 - **Types**: PascalCase
 
-## 🔐 Segurança
+##   Segurança
 
-- ✅ Autenticação JWT via `authMiddleware`
-- ✅ Validação de entrada com Zod
-- ✅ Proteção de rotas com middleware
-- ✅ Verificação de propriedade (usuário só acessa seus dados)
-- ✅ Senhas hasheadas com bcryptjs
+-   Autenticação JWT via `authMiddleware`
+-   Validação de entrada com Zod
+-   Proteção de rotas com middleware
+-   Verificação de propriedade (usuário só acessa seus dados)
+-   Senhas hasheadas com bcryptjs
 
-## 📚 Tecnologias
+##   Tecnologias
 
 - **Express.js** - Framework web
 - **PostgreSQL** - Banco de dados
@@ -200,7 +200,7 @@ static async remove(userId: number, bookId: number): Promise<boolean> {
 - **JWT** - Autenticação
 - **bcryptjs** - Hash de senhas
 
-## 🧪 Próximas Melhorias
+##   Próximas Melhorias
 
 - [ ] Adicionar testes unitários
 - [ ] Implementar tratamento de erros centralizado
