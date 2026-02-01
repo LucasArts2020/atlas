@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Trash2, Pencil, X, Star, Book as BookIcon } from "lucide-react"; // Importei o BookIcon
+import { useState, useEffect } from "react";
+import { Trash2, Pencil, X, Star, Book as BookIcon, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { useFetchWithAuth } from "@/hooks/useFetchWithAuth";
 
 // Definição do Tipo
@@ -45,6 +46,7 @@ export function BookCard({
   const [editTotal, setEditTotal] = useState(pages_total);
   const [editRating, setEditRating] = useState(rating);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // --- FILTRO DE SEGURANÇA ---
   // Se a URL for do Unsplash (que está quebrado), anulamos ela para mostrar o ícone
@@ -55,6 +57,25 @@ export function BookCard({
     pages_total > 0
       ? Math.min(100, Math.round((pages_read / pages_total) * 100))
       : 0;
+
+  // Verifica se o livro é favorito ao carregar
+  useEffect(() => {
+    const checkFavorite = async () => {
+      try {
+        const res = await fetchWithAuth(
+          `http://localhost:3000/books/${id}/is-favorite`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setIsFavorite(data.isFavorite);
+        }
+      } catch (error) {
+        console.error("Erro ao verificar favorito:", error);
+      }
+    };
+
+    checkFavorite();
+  }, [id, fetchWithAuth]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,6 +122,28 @@ export function BookCard({
     }
   };
 
+  const handleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      const endpoint = isFavorite
+        ? `http://localhost:3000/books/${id}/unfavorite`
+        : `http://localhost:3000/books/${id}/favorite`;
+
+      const res = await fetchWithAuth(endpoint, {
+        method: "POST",
+      });
+
+      if (!res.ok) throw new Error("Erro ao atualizar favorito");
+
+      setIsFavorite(!isFavorite);
+    } catch (error: unknown) {
+      console.error(error);
+      alert("Erro ao atualizar favoritos.");
+    }
+  };
+
   const StarDisplay = ({ count }: { count: number }) => (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -117,7 +160,10 @@ export function BookCard({
 
   return (
     <>
-      <div className="group relative flex flex-col gap-3 w-full">
+      <Link
+        href={`/books/${id}`}
+        className="group relative flex flex-col gap-3 w-full"
+      >
         {/* CAPA DO LIVRO (Com proteção contra Unsplash) */}
         <div
           className="relative w-full bg-[#f0e7db] rounded-md shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-xl border border-gray-100 overflow-hidden flex items-center justify-center"
@@ -141,21 +187,20 @@ export function BookCard({
             </div>
           )}
 
-          {/* Ações (Hover) */}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3 backdrop-blur-[2px] z-10">
-            <button
-              onClick={() => setIsEditing(true)}
-              className="p-2 bg-white rounded-full text-gray-700 hover:text-blue-600 shadow-lg transform hover:scale-110 transition"
-            >
-              <Pencil size={18} />
-            </button>
-            <button
-              onClick={handleDelete}
-              className="p-2 bg-white rounded-full text-gray-700 hover:text-red-600 shadow-lg transform hover:scale-110 transition"
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
+          {/* Botão de Favorito (canto superior direito) */}
+          <button
+            onClick={handleFavorite}
+            className="absolute top-2 right-2 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:scale-110 transition z-20"
+          >
+            <Heart
+              size={18}
+              className={`${
+                isFavorite
+                  ? "fill-red-500 text-red-500"
+                  : "text-gray-400 hover:text-red-500"
+              } transition`}
+            />
+          </button>
 
           {/* Barra de Progresso Visual */}
           {status === "lendo" && pages_total > 0 && (
@@ -170,10 +215,7 @@ export function BookCard({
 
         {/* INFO */}
         <div>
-          <h3
-            className="font-serif font-bold text-[#1a1a1a] text-lg leading-tight line-clamp-1 group-hover:text-[#ef7e77] transition cursor-pointer"
-            onClick={() => setIsEditing(true)}
-          >
+          <h3 className="font-serif font-bold text-[#1a1a1a] text-lg leading-tight line-clamp-1 group-hover:text-[#ef7e77] transition">
             {title}
           </h3>
           <p className="text-gray-400 text-sm line-clamp-1">{author}</p>
@@ -191,7 +233,7 @@ export function BookCard({
             )}
           </div>
         </div>
-      </div>
+      </Link>
 
       {/* --- MODAL DE EDIÇÃO --- */}
       {isEditing && (

@@ -231,7 +231,6 @@ export function BookDetails({ book }: { book: Book }) {
             </h1>
             <p className="text-xl text-gray-500 font-medium">{book.author}</p>
           </div>
-
           {/* Painel de Controle de Leitura */}
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gray-100">
@@ -315,7 +314,6 @@ export function BookDetails({ book }: { book: Book }) {
               </div>
             </div>
           </div>
-
           {/* Área de Notas (Caderno) */}
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex-1">
             <div className="flex justify-between items-center mb-4">
@@ -331,7 +329,6 @@ export function BookDetails({ book }: { book: Book }) {
               className="w-full h-64 bg-[#f8f5f2] rounded-xl p-6 text-[#1a1a1a] leading-relaxed border-none outline-none resize-none focus:ring-2 focus:ring-[#ef7e77]/20 placeholder-gray-400 font-medium text-lg"
             ></textarea>
           </div>
-
           {/* Barra de Ações */}
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <button

@@ -23,7 +23,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-20 bg-[#f8f5f2] border-r border-[#eecbc4]/30 flex flex-col items-center py-8 z-50">
+    <aside className="fixed left-0 top-0 h-screen w-20 bg-[var(--background)] border-r border-[#eecbc4]/30 flex flex-col items-center py-8 z-50">
       {/* Logo / Brand */}
       <div className="mb-10">
         <div className="w-10 h-10 bg-[#1a1a1a] rounded-xl flex items-center justify-center text-white font-serif font-bold text-xl shadow-lg shadow-[#ef7e77]/20">

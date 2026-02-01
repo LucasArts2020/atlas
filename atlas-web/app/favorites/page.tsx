@@ -11,18 +11,14 @@ async function getFavoriteBooks(): Promise<Book[]> {
     const token = cookieStore.get("atlas_token")?.value;
     if (!token) return [];
 
-    const res = await fetch("http://localhost:3000/books", {
+    const res = await fetch("http://localhost:3000/favorites", {
       cache: "no-store",
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return [];
-    const json = await res.json();
-    const books = json.data || json || [];
+    const books = await res.json();
 
-    // Filtra apenas livros lidos com rating
-    return books.filter(
-      (book: Book) => book.status === "lido" && book.rating > 0,
-    );
+    return books || [];
   } catch (error) {
     console.error(error);
     return [];

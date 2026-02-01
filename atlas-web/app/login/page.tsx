@@ -35,74 +35,77 @@ export default function LoginPage() {
 
       // 2. Redirecionar para o Dashboard
       router.push("/");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#1e1e2d]">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-[#f8f5f2] p-4">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 w-full max-w-md sm:max-w-lg">
+        <div className="text-center mb-6 sm:mb-8 p-6 sm:p-8">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ef7e77] rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 text-white shadow-md">
             <BookOpen size={24} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1a1a1a] mb-1">
             Bem-vindo ao Atlas
           </h1>
-          <p className="text-gray-500 text-sm">
-            Faça login para gerenciar sua biblioteca
+          <p className="text-sm sm:text-base text-gray-600">
+            Gerencie sua biblioteca de livros
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-4 sm:space-y-5 px-6 sm:px-8 pb-6 sm:pb-8"
+        >
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-[#1a1a1a] mb-2">
               E-mail
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base bg-white border border-gray-200 focus:ring-2 focus:ring-[#ef7e77] focus:border-[#ef7e77] outline-none transition placeholder-gray-400"
               placeholder="seu@email.com"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-[#1a1a1a] mb-2">
               Senha
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base bg-white border border-gray-200 focus:ring-2 focus:ring-[#ef7e77] focus:border-[#ef7e77] outline-none transition placeholder-gray-400"
               placeholder="••••••••"
               required
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-100 text-red-600 text-sm rounded-lg text-center">
+            <div className="p-3 sm:p-4 bg-red-50 text-red-600 text-xs sm:text-sm rounded-lg text-center border border-red-200">
               {error}
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="w-full bg-[#ef7e77] hover:bg-[#e86961] text-white font-bold py-3 sm:py-4 text-base sm:text-lg rounded-lg sm:rounded-xl transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
             Entrar
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="text-center text-xs sm:text-sm text-gray-600 pb-6 sm:pb-8 border-t border-gray-100 pt-6 sm:pt-8 px-6 sm:px-8">
           Ainda não tem conta?{" "}
           <Link
             href="/register"
-            className="text-blue-600 hover:underline font-semibold"
+            className="text-[#ef7e77] hover:text-[#e86961] font-semibold transition"
           >
             Cadastre-se
           </Link>
