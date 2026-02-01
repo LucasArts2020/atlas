@@ -2,17 +2,35 @@
 
 import { useState } from "react";
 import { Plus, X, Search, Loader2, BookOpen } from "lucide-react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useFetchWithAuth } from "@/hooks/useFetchWithAuth";
+
+interface GoogleBooksItem {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors?: string[];
+    description?: string;
+    imageLinks?: {
+      small?: string;
+      medium?: string;
+      thumbnail?: string;
+      smallThumbnail?: string;
+    };
+    pageCount?: number;
+    publishedDate?: string;
+  };
+}
 
 export function NewBookButton() {
   const router = useRouter();
+  const { fetchWithAuth } = useFetchWithAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<GoogleBooksItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const [selectedBook, setSelectedBook] = useState<{
@@ -23,8 +41,8 @@ export function NewBookButton() {
     pages_total: number;
     pages_read: number;
     status: string;
+    published_date: string | null;
   } | null>(null);
-
   const handleSearch = async (query: string) => {
     setSearchTerm(query);
     if (query.length < 3) return;
@@ -36,43 +54,48 @@ export function NewBookButton() {
       );
       const data = await res.json();
       setSearchResults(data.items || []);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
     } finally {
       setIsSearching(false);
     }
   };
 
-  const handleSelectBook = (book: any) => {
+  const handleSelectBook = (book: GoogleBooksItem) => {
     const info = book.volumeInfo;
 
-    // PREENCHE OS DADOS, MAS PERMITE EDIÇÃO DEPOIS
+    // Pega a melhor imagem disponível (medium > small > tiny)
+    const coverUrl =
+      info.imageLinks?.medium?.replace("http:", "https:") ||
+      info.imageLinks?.small?.replace("http:", "https:") ||
+      info.imageLinks?.thumbnail?.replace("http:", "https:") ||
+      "";
+
     setSelectedBook({
       title: info.title || "",
       author: info.authors ? info.authors[0] : "Desconhecido",
       summary: info.description
         ? info.description.substring(0, 300) + "..."
         : "",
-      cover_url: info.imageLinks?.thumbnail?.replace("http:", "https:") || "",
-      pages_total: info.pageCount || 0, // Se vier 0, você edita no input
+      cover_url: coverUrl,
+      pages_total: info.pageCount || 0,
       pages_read: 0,
       status: "quero_ler",
+      // Adicionamos a data aqui. Se não tiver, mandamos null ou string vazia.
+      published_date: info.publishedDate || null,
     });
 
     setSearchResults([]);
   };
-
   const handleSave = async () => {
     if (!selectedBook) return;
     setLoading(true);
-    const token = Cookies.get("atlas_token");
 
     try {
-      const res = await fetch("http://localhost:3000/books", {
+      const res = await fetchWithAuth("http://localhost:3000/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(selectedBook),
       });
@@ -83,7 +106,7 @@ export function NewBookButton() {
       setSelectedBook(null);
       setSearchTerm("");
       router.refresh(); // Atualiza a página de fundo
-    } catch (error) {
+    } catch (error: unknown) {
       alert("Erro ao salvar livro.");
     } finally {
       setLoading(false);
@@ -155,7 +178,8 @@ export function NewBookButton() {
                         {thumbUrl ? (
                           <Image
                             src={thumbUrl}
-                            alt={item.volumeInfo.title}
+                            // CORREÇÃO AQUI: Adicionado fallback "|| 'Book Cover'"
+                            alt={item.volumeInfo.title || "Book Cover"}
                             width={48}
                             height={64}
                             className="object-cover rounded shadow-sm"
@@ -184,13 +208,14 @@ export function NewBookButton() {
               <div className="space-y-6">
                 <div className="flex gap-6 bg-[#f8f5f2] p-6 rounded-2xl border border-gray-100">
                   {selectedBook.cover_url && (
-                    <Image
-                      src={selectedBook.cover_url}
-                      alt={selectedBook.title}
-                      width={80}
-                      height={120}
-                      className="object-cover rounded-md shadow-lg rotate-1"
-                    />
+                    <div className="relative w-20 h-32 shrink-0">
+                      <Image
+                        src={selectedBook.cover_url}
+                        alt={selectedBook.title}
+                        fill
+                        className="object-cover rounded-md shadow-lg"
+                      />
+                    </div>
                   )}
                   <div className="flex flex-col justify-center w-full">
                     <h3 className="font-serif font-bold text-xl text-[#1a1a1a] line-clamp-2 leading-tight mb-1">

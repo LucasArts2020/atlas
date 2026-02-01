@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, Pencil, X, Star } from "lucide-react";
-import Cookies from "js-cookie";
+import { Trash2, Pencil, X, Star, Book as BookIcon } from "lucide-react"; // Importei o BookIcon
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useFetchWithAuth } from "@/hooks/useFetchWithAuth";
+
+// Definição do Tipo
+type BookStatus = "lendo" | "lido" | "quero_ler";
 
 interface BookProps {
   id: number;
@@ -12,7 +15,7 @@ interface BookProps {
   author: string;
   summary: string;
   cover_url?: string | null;
-  status: "lendo" | "lido" | "quero_ler";
+  status: BookStatus;
   pages_total: number;
   pages_read: number;
   rating: number;
@@ -29,40 +32,40 @@ export function BookCard({
   pages_total = 0,
   pages_read = 0,
   rating = 0,
-  index,
 }: BookProps) {
   const router = useRouter();
-
+  const { fetchWithAuth } = useFetchWithAuth();
   const [isEditing, setIsEditing] = useState(false);
 
-  // ESTADOS DO FORMULÁRIO (Preenchidos com os dados atuais)
-  const [editTitle, setEditTitle] = useState(title);
-  const [editAuthor, setEditAuthor] = useState(author);
-  const [editStatus, setEditStatus] = useState(status);
+  // Estados do Formulário
+  const [editTitle] = useState(title);
+  const [editAuthor] = useState(author);
+  const [editStatus, setEditStatus] = useState<BookStatus>(status);
   const [editRead, setEditRead] = useState(pages_read);
   const [editTotal, setEditTotal] = useState(pages_total);
   const [editRating, setEditRating] = useState(rating);
   const [loading, setLoading] = useState(false);
+
+  // --- FILTRO DE SEGURANÇA ---
+  // Se a URL for do Unsplash (que está quebrado), anulamos ela para mostrar o ícone
+  const safeCoverUrl =
+    cover_url && !cover_url.includes("unsplash") ? cover_url : null;
 
   const percentage =
     pages_total > 0
       ? Math.min(100, Math.round((pages_read / pages_total) * 100))
       : 0;
 
-  // FUNÇÃO DE SALVAR CORRIGIDA
   const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault(); // Impede o recarregamento da página
+    e.preventDefault();
     setLoading(true);
-    const token = Cookies.get("atlas_token");
 
     try {
-      const res = await fetch(`http://localhost:3000/books/${id}`, {
+      const res = await fetchWithAuth(`http://localhost:3000/books/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        // Garante que números sejam enviados como números
         body: JSON.stringify({
           title: editTitle,
           author: editAuthor,
@@ -77,8 +80,8 @@ export function BookCard({
       if (!res.ok) throw new Error("Erro ao atualizar");
 
       setIsEditing(false);
-      router.refresh(); // Força a atualização dos dados na tela
-    } catch (error) {
+      router.refresh();
+    } catch (error: unknown) {
       console.error(error);
       alert("Erro ao salvar as alterações.");
     } finally {
@@ -88,12 +91,14 @@ export function BookCard({
 
   const handleDelete = async () => {
     if (!confirm("Excluir este livro?")) return;
-    const token = Cookies.get("atlas_token");
-    await fetch(`http://localhost:3000/books/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    router.refresh();
+    try {
+      await fetchWithAuth(`http://localhost:3000/books/${id}`, {
+        method: "DELETE",
+      });
+      router.refresh();
+    } catch (error: unknown) {
+      alert("Erro ao excluir o livro.");
+    }
   };
 
   const StarDisplay = ({ count }: { count: number }) => (
@@ -102,7 +107,9 @@ export function BookCard({
         <Star
           key={star}
           size={12}
-          className={`${star <= count ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+          className={`${
+            star <= count ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+          }`}
         />
       ))}
     </div>
@@ -111,18 +118,31 @@ export function BookCard({
   return (
     <>
       <div className="group relative flex flex-col gap-3 w-full">
-        {/* CAPA DO LIVRO */}
-        <div className="relative aspect-[2/3] w-full bg-white rounded-md shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-xl border border-gray-100 overflow-hidden">
-          {cover_url ? (
-            <Image src={cover_url} alt={title} fill className="object-cover" />
+        {/* CAPA DO LIVRO (Com proteção contra Unsplash) */}
+        <div
+          className="relative w-full bg-[#f0e7db] rounded-md shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-xl border border-gray-100 overflow-hidden flex items-center justify-center"
+          style={{ aspectRatio: "2/3" }}
+        >
+          {safeCoverUrl ? (
+            <Image
+              src={safeCoverUrl}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 text-xs">
-              Sem Capa
+            // Placeholder com Ícone (para substituir o Unsplash ou falta de capa)
+            <div className="flex flex-col items-center justify-center gap-2 text-[#bfa094]">
+              <BookIcon size={32} strokeWidth={1.5} />
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">
+                Sem Capa
+              </span>
             </div>
           )}
 
           {/* Ações (Hover) */}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3 backdrop-blur-[2px]">
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3 backdrop-blur-[2px] z-10">
             <button
               onClick={() => setIsEditing(true)}
               className="p-2 bg-white rounded-full text-gray-700 hover:text-blue-600 shadow-lg transform hover:scale-110 transition"
@@ -137,9 +157,9 @@ export function BookCard({
             </button>
           </div>
 
-          {/* Barra de Progresso Visual na Capa */}
+          {/* Barra de Progresso Visual */}
           {status === "lendo" && pages_total > 0 && (
-            <div className="absolute bottom-0 left-0 w-full h-1.5 bg-gray-200">
+            <div className="absolute bottom-0 left-0 w-full h-1.5 bg-gray-200 z-10">
               <div
                 className="h-full bg-[#ef7e77]"
                 style={{ width: `${percentage}%` }}
@@ -188,7 +208,6 @@ export function BookCard({
             </h2>
 
             <form onSubmit={handleUpdate} className="space-y-5">
-              {/* Estrelas */}
               <div className="flex justify-center gap-2 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -198,20 +217,23 @@ export function BookCard({
                   >
                     <Star
                       size={28}
-                      className={`${star <= editRating ? "text-yellow-400 fill-yellow-400" : "text-gray-200"} transition`}
+                      className={`${
+                        star <= editRating
+                          ? "text-yellow-400 fill-yellow-400"
+                          : "text-gray-200"
+                      } transition`}
                     />
                   </button>
                 ))}
               </div>
 
-              {/* Status */}
               <div>
                 <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">
                   Status
                 </label>
                 <select
                   value={editStatus}
-                  onChange={(e) => setEditStatus(e.target.value as any)}
+                  onChange={(e) => setEditStatus(e.target.value as BookStatus)}
                   className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ef7e77]"
                 >
                   <option value="quero_ler">To Read</option>
@@ -220,7 +242,6 @@ export function BookCard({
                 </select>
               </div>
 
-              {/* Progresso (Páginas) */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">

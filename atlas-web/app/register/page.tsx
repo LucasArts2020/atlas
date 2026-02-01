@@ -22,6 +22,7 @@ export default function RegisterPage() {
       const res = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -34,8 +35,8 @@ export default function RegisterPage() {
       // Sucesso! Redireciona para o Login para a pessoa entrar
       alert("Conta criada com sucesso! Faça login agora.");
       router.push("/login");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
     } finally {
       setLoading(false);
     }

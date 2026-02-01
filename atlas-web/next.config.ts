@@ -11,13 +11,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com", // Usado para as capas
       },
-      {
-        protocol: "https",
-        hostname: "source.unsplash.com", // <--- ADICIONE ESTE (Para os avatares)
-      },
+
       {
         protocol: "https",
         hostname: "github.com",
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
       },
     ],
   },
