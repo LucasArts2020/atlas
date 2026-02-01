@@ -9,13 +9,18 @@ export const registerSchema = z.object({
 
 // Regras para criar/editar livro
 export const bookSchema = z.object({
+  // ... mantenha os outros campos (title, author, etc)
   title: z.string().min(1, "O título é obrigatório"),
   author: z.string().min(3, "Nome do autor deve ter pelo menos 3 letras"),
   summary: z.string().optional(),
-  cover_url: z.string().optional(),
+  cover_url: z.string().optional().nullable(),
   status: z.enum(["lendo", "lido", "quero_ler"]).optional(),
-  // Novos campos numéricos (opcionais para não quebrar cadastros antigos)
   pages_total: z.number().optional(),
   pages_read: z.number().optional(),
   rating: z.number().min(0).max(5).optional(),
+  published_date: z.string().optional().nullable(),
+
+  // ADICIONE ESTES DOIS:
+  started_at: z.string().optional().nullable(),
+  finished_at: z.string().optional().nullable(),
 });

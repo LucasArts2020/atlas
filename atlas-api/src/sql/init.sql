@@ -28,3 +28,10 @@ CREATE TABLE IF NOT EXISTS books (
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 ALTER TABLE books ADD COLUMN notes TEXT;
+
+-- Adicione estas linhas ao seu init.sql ou rode no banco
+ALTER TABLE books ADD COLUMN IF NOT EXISTS pages_total INTEGER DEFAULT 0;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS pages_read INTEGER DEFAULT 0;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS rating INTEGER DEFAULT 0;
+-- A coluna notes você já tinha o comando, mas garanta que ela existe
+ALTER TABLE books ADD COLUMN IF NOT EXISTS notes TEXT;

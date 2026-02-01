@@ -20,7 +20,6 @@ router.post("/books", authMiddleware, async (req, res) => {
       return res.status(400).json({ errors: validation.error.format() });
     }
 
-    // 1. Pegamos os dados do body (incluindo as novidades: status, páginas, etc)
     const {
       title,
       author,
@@ -29,16 +28,24 @@ router.post("/books", authMiddleware, async (req, res) => {
       status = "quero_ler",
       pages_total = 0,
       pages_read = 0,
-      rating = 0, // <--- Pegue o rating
+      rating = 0,
+      published_date,
+      started_at, // <--- Pegue do body
+      finished_at, // <--- Pegue do body // <--- Recebemos a data aqui
     } = validation.data;
     const userId = res.locals.userId;
 
+    // Se a data vier vazia ou inválida, usamos null.
+    // O Postgres aceita datas como string 'YYYY-MM-DD'.
+    const finalDate = published_date ? published_date : new Date();
+
     const query = `
-      INSERT INTO books (title, author, summary, cover_url, status, pages_total, pages_read, rating, published_date, user_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9)
-      RETURNING *
-    `;
-    // Agora o userId existe e pode ser usado aqui
+    INSERT INTO books (title, author, summary, cover_url, status, pages_total, pages_read, rating, published_date, started_at, finished_at, user_id)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    RETURNING *
+  `;
+    // Note que trocamos o NOW() pelo $9
+
     const values = [
       title,
       author,
@@ -48,9 +55,11 @@ router.post("/books", authMiddleware, async (req, res) => {
       pages_total,
       pages_read,
       rating,
-      userId,
+      published_date ? published_date : new Date(),
+      started_at || null, // <--- $10
+      finished_at || null, // <--- $11
+      res.locals.userId, // <--- $12
     ];
-
     const result = await pool.query(query, values);
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -59,20 +68,55 @@ router.post("/books", authMiddleware, async (req, res) => {
   }
 });
 // Rota 2: LISTAR livros (GET)
-router.get("/books", async (req, res) => {
+// Adicione authMiddleware para garantir que pegamos apenas os livros do usuário logado
+router.get("/books", authMiddleware, async (req, res) => {
   try {
-    // Pegamos a página da URL (ex: ?page=2). Se não tiver, assume 1.
     const page = Number(req.query.page) || 1;
-    const limit = 5; // Quantos livros por página
-    const offset = (page - 1) * limit; // Cálculo do pulo (Página 2 pula os 10 primeiros)
+    const limit = 5; // Limite de itens por página
+    const offset = (page - 1) * limit;
 
-    // Buscamos os livros com limite
-    const query =
-      "SELECT * FROM books ORDER BY created_at DESC LIMIT $1 OFFSET $2";
-    const result = await pool.query(query, [limit, offset]);
+    // Parâmetros de filtro
+    const search = req.query.q ? `%${req.query.q}%` : null;
+    const status = req.query.status as string;
 
-    // (Opcional) Contar quantos livros tem no total para o front saber quantas páginas criar
-    const countResult = await pool.query("SELECT COUNT(*) FROM books");
+    // ID do usuário logado (Vem do middleware)
+    const userId = res.locals.userId;
+
+    // Construção da Query
+    let whereClause = "WHERE user_id = $1";
+    let params: any[] = [userId];
+    let paramIndex = 2;
+
+    // 1. Filtro de Busca
+    if (search) {
+      whereClause += ` AND (title ILIKE $${paramIndex} OR author ILIKE $${paramIndex})`;
+      params.push(search);
+      paramIndex++;
+    }
+
+    // 2. Filtro de Status
+    if (status && status !== "todos") {
+      whereClause += ` AND status = $${paramIndex}`;
+      params.push(status);
+      paramIndex++;
+    }
+
+    // Query de Dados
+    const query = `
+      SELECT * FROM books 
+      ${whereClause}
+      ORDER BY created_at DESC 
+      LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+    `;
+
+    // Adiciona limit e offset aos parâmetros finais
+    const queryParams = [...params, limit, offset];
+    const result = await pool.query(query, queryParams);
+
+    // Query de Contagem (Total)
+    // Usamos os mesmos filtros (params), mas sem limit/offset
+    const countQuery = `SELECT COUNT(*) FROM books ${whereClause}`;
+    const countResult = await pool.query(countQuery, params);
     const totalBooks = Number(countResult.rows[0].count);
 
     res.json({
@@ -84,10 +128,11 @@ router.get("/books", async (req, res) => {
       },
     });
   } catch (err) {
+    console.error(err);
+    // Retornamos um JSON de erro claro
     res.status(500).json({ error: "Erro ao buscar livros" });
   }
 });
-
 // Adicione logo abaixo da rota POST
 // Rota DELETE: /books/1, /books/2, etc.
 router.delete("/books/:id", authMiddleware, async (req, res) => {
@@ -134,6 +179,8 @@ router.put("/books/:id", async (req, res) => {
     pages_total,
     rating,
     notes,
+    started_at, // <--- NOVO
+    finished_at, // <--- NOVO
   } = req.body;
 
   const authHeader = req.headers["authorization"];
@@ -153,8 +200,10 @@ router.put("/books/:id", async (req, res) => {
         pages_read = $5, 
         pages_total = $6, 
         rating = $7, 
-        notes = $8 
-       WHERE id = $9`,
+        notes = $8,
+        started_at = $9,   -- <--- NOVO
+        finished_at = $10  -- <--- NOVO
+       WHERE id = $11`, // O ID agora é o $11
       [
         title,
         author,
@@ -164,7 +213,9 @@ router.put("/books/:id", async (req, res) => {
         pages_total,
         rating,
         notes,
-        id,
+        started_at || null, // $9
+        finished_at || null, // $10
+        id, // $11
       ],
     );
 
